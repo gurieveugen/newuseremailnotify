@@ -26,10 +26,15 @@ function wp_new_user_notification($user_id, $plaintext_pass = '')
 
     if(empty($plaintext_pass)) return;
 
-    $message  = sprintf(__('Username: %s'), $user->user_login) . "\r\n";
-    $message .= wp_login_url() . "\r\n";
+    $plugins_url  = plugins_url();
+    $message      = '<img src="'.get_bloginfo('template_url').'/images/email_logo.png" alt="Badge green"><br>';
+    $message     .= 'Thank you for signing up for the Role Models Matter toolkit.  This toolkit provides fun, online training and resources for role models to develop the skills to engage youth in STEM (science, technology, engineering, and math).  Please be sure to sign in each time you visit the site so that you can save and share responses to questions within each tool.'."<br><br>\r\n\n";
+    $message     .= sprintf('Username: %s', $user->user_login)."<br>\r\n";
+    $message     .= sprintf('Link to Role Models Matter Toolkit: %s', wp_login_url())."<br>\r\n";
+    
+    $headers      = "Content-Type: text/html; charset=UTF-8";
 
-    wp_mail($user->user_email, sprintf(__('[%s] Your username and password'), $blogname), $message);
+    wp_mail($user->user_email, sprintf(__('[%s] Your username and password'), $blogname), $message, $headers);
 
 }
 endif;
